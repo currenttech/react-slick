@@ -618,6 +618,7 @@ export class InnerSlider extends React.Component {
     const { pauseOnHover } = this.props;
     trackProps = {
       ...trackProps,
+      unslick: this.props.noUnslick ? false : trackProps.unslick,
       onMouseEnter: pauseOnHover ? this.onTrackOver : null,
       onMouseLeave: pauseOnHover ? this.onTrackLeave : null,
       onMouseOver: pauseOnHover ? this.onTrackOver : null,
@@ -660,7 +661,8 @@ export class InnerSlider extends React.Component {
       "slideCount",
       "slidesToShow",
       "prevArrow",
-      "nextArrow"
+      "nextArrow",
+      "noUnslick"
     ]);
     arrowProps.clickHandler = this.changeSlide;
 
@@ -715,20 +717,20 @@ export class InnerSlider extends React.Component {
       dir: "ltr"
     };
 
-    if (this.props.unslick) {
+    if (this.props.unslick && !this.props.noUnslick) {
       listProps = { className: "slick-list" };
       innerSliderProps = { className };
     }
     return (
       <div {...innerSliderProps}>
-        {prevArrow}
+        {!this.props.unslick || this.props.noUnslick ? prevArrow : ""}
         <div ref={this.listRefHandler} {...listProps}>
           <Track ref={this.trackRefHandler} {...trackProps}>
             {this.props.children}
           </Track>
         </div>
-        {nextArrow}
-        {dots}
+        {!this.props.unslick || this.props.noUnslick ? nextArrow : ""}
+        {!this.props.unslick || this.props.noUnslick ? dots : ""}
       </div>
     );
   };

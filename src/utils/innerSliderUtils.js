@@ -84,7 +84,8 @@ export const canGoNext = spec => {
     ) {
       canGo = false;
     }
-  } else if (spec.slideCount <= spec.slidesToShow) canGo = false;
+  } else if (spec.noUnslick && spec.slideCount <= spec.slidesToShow)
+    canGo = false;
   return canGo;
 };
 
@@ -641,7 +642,7 @@ export const getTrackAnimateCSS = spec => {
   return style;
 };
 export const getTrackLeft = spec => {
-  if (spec.unslick) {
+  if (spec.unslick && !spec.noUnslick) {
     return 0;
   }
 
@@ -747,7 +748,11 @@ export const getTrackLeft = spec => {
 };
 
 export const getPreClones = spec => {
-  if (spec.unslick || !spec.infinite) {
+  if (
+    (spec.unslick && !spec.noUnslick) ||
+    !spec.infinite ||
+    (spec.infinite && spec.noUnslick && spec.slideCount <= spec.slidesToShow)
+  ) {
     return 0;
   }
   if (spec.variableWidth) {
@@ -757,7 +762,11 @@ export const getPreClones = spec => {
 };
 
 export const getPostClones = spec => {
-  if (spec.unslick || !spec.infinite) {
+  if (
+    (spec.unslick && !spec.noUnslick) ||
+    !spec.infinite ||
+    (spec.infinite && spec.noUnslick && spec.slideCount <= spec.slidesToShow)
+  ) {
     return 0;
   }
   return spec.slideCount;

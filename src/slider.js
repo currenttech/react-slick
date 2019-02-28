@@ -92,7 +92,7 @@ export default class Slider extends React.Component {
         resp => resp.breakpoint === this.state.breakpoint
       );
       settings =
-        newProps[0].settings === "unslick"
+        newProps[0].settings === "unslick" && !this.props.noUnslick
           ? "unslick"
           : { ...defaultProps, ...this.props, ...newProps[0].settings };
     } else {
@@ -200,12 +200,12 @@ export default class Slider extends React.Component {
         newChildren.push(<div key={i}>{newSlide}</div>);
       }
     }
-
-    if (settings === "unslick") {
+    if (settings === "unslick" && !this.props.noUnslick) {
       const className = "regular slider " + (this.props.className || "");
       return <div className={className}>{newChildren}</div>;
     } else if (newChildren.length <= settings.slidesToShow) {
-      settings.unslick = true;
+      if (!this.props.noUnslick) settings.unslick = true;
+      else settings.unslick = false;
     }
     return (
       <InnerSlider ref={this.innerSliderRefHandler} {...settings}>
