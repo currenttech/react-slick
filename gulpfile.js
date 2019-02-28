@@ -121,6 +121,13 @@ gulp.task("dist-min", function(cb) {
 });
 
 gulp.task(
+  "dist-min",
+  gulp.series(["dist-clean", "dist-min"], function(done) {
+    done();
+  })
+);
+
+gulp.task(
   "dist",
   gulp.series(["dist-clean", "dist-unmin", "dist-min"], function(done) {
     done();
